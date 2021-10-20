@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="edit_message">Enter a Message</string>
+    <string name="button_send">Send</string>
+    <string name="map_placeholder">This is where the map will be shown</string>
+    <string name="map_title">Mapa de la ETSIIT</string>
+
+    /*Títulos de actividad*/
+    <string name="srch_route">Ruta</string>
+    <string name="srch_info">Info QR</string>
+    <string name="srch_staff">Busca Personal</string>
+
+</resources>
