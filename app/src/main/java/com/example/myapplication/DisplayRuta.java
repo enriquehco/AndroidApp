@@ -91,11 +91,13 @@ public class DisplayRuta extends AppCompatActivity {
         image.setImageBitmap(newBitmap);
     }
 
-    public void calculateMotion(float rotX, float rotY, int distance){
+    public boolean calculateMotion(float rotX, float rotY, int distance){
         int desp;
+        boolean modif = false;
         //Nos estamos moviendo a la derecha
         float diff = Math.abs(X_ANTERIOR-rotX);
-        if(diff>1) {
+        if(diff>0.2) {
+            modif = true;
             if (X_ANTERIOR < rotX) {
                 //Nos estamos moviendo a la derecha
                 if (X_ANTERIOR > 0 && X_ANTERIOR < 50 && rotX < 360 && rotX > 310) {
@@ -111,8 +113,9 @@ public class DisplayRuta extends AppCompatActivity {
                 }
             }
             X_ANTERIOR = rotX;
-            START_X -= desp;
+            START_X -= desp*(diff*0.5);
         }
+        return modif;
     }
 
     SensorEventListener proximitySensorEventListener = new SensorEventListener() {
@@ -183,8 +186,9 @@ public class DisplayRuta extends AppCompatActivity {
                 inicializa=false;
             }
             ((TextView)findViewById(R.id.textView2)).setText(""+rotX+","+rotY);
-            calculateMotion(rotX,rotY, 200);
-            showImage();
+            boolean modif = calculateMotion(rotX,rotY, 50);
+            if(modif)
+                showImage();
         }
 
     };
