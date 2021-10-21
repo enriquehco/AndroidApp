@@ -24,4 +24,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DisplayQRActivity.class);
         startActivity(intent);
     }
+
+    public void startStaffSearch(View view){
+        Intent intent = new Intent( this, DisplayBuscaPersonal.class);
+        startActivity(intent);
+    }
 }
