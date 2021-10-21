@@ -3,7 +3,12 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorIntermediate</item>
+        <item name="colorAccent">@color/colorIntermediate</item>
+    </style>
+    <style name="ActivityTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorPrimary">@color/colorSecondary</item>
+        <item name="colorPrimaryDark">@color/colorIntermediate</item>
         <item name="colorAccent">@color/colorIntermediate</item>
     </style>
 

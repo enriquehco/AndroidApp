@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- color palette 1 -->
-    <color name="colorPrimary">#FBBA72</color>
-    <color name="colorPrimaryDark">#CA5310</color>
-    <color name="colorIntermediate">#BB4D00</color>
-    <color name="colorSecondary">#8F250C</color>
-    <color name="colorSecondaryDark">#691E06</color>
+    <color name="colorPrimary">#FFA552</color>
+    <color name="colorPrimaryDark">#BA5624</color>
+    <color name="colorIntermediate">#BA5624</color>
+    <color name="colorSecondary">#28965A</color>
+    <color name="colorSecondaryDark">#2A6041</color>
 </resources>
