@@ -10,4 +10,6 @@
     <string name="srch_info">Info QR</string>
     <string name="srch_staff">Busca Personal</string>
 
+    /*Defaults*/
+    <string name="default_description">Image description here</string>
 </resources>
