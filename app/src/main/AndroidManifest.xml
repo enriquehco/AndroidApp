@@ -11,6 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DisplayBuscaPersonal"
+                  android:parentActivityName=".MainActivity">
+            <!-- metadata dag for API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity android:name=".DisplayMessageActivity"
                   android:parentActivityName=".MainActivity">
             <!-- metadata tag required for API level 15 and lower -->
