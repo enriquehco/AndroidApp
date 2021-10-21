@@ -27,7 +27,7 @@ public class DisplayRuta extends AppCompatActivity {
     Sensor proximitySensor;
     Sensor rotationSensor;
     private Bitmap SOURCE_BITMAP;
-    private int START_X = 0;
+    private int START_X = 2000;
     private int START_Y = 0;
     private int WIDTH_PX = 1000;
     private int HEIGHT_PX = 1650;
@@ -95,7 +95,7 @@ public class DisplayRuta extends AppCompatActivity {
         int desp;
         //Nos estamos moviendo a la derecha
         float diff = Math.abs(X_ANTERIOR-rotX);
-        if(diff>3) {
+        if(diff>1) {
             if (X_ANTERIOR < rotX) {
                 //Nos estamos moviendo a la derecha
                 if (X_ANTERIOR > 0 && X_ANTERIOR < 50 && rotX < 360 && rotX > 310) {
@@ -159,7 +159,7 @@ public class DisplayRuta extends AppCompatActivity {
         private void update(float[] vectors){
             try
             {
-                Thread.sleep(2);
+                Thread.sleep(0);
             }
             catch(InterruptedException ex)
             {
@@ -183,7 +183,7 @@ public class DisplayRuta extends AppCompatActivity {
                 inicializa=false;
             }
             ((TextView)findViewById(R.id.textView2)).setText(""+rotX+","+rotY);
-            calculateMotion(rotX,rotY, 50);
+            calculateMotion(rotX,rotY, 200);
             showImage();
         }
 
