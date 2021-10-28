@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- color palette 1 -->
-    <color name="colorPrimary">#FFA552</color>
-    <color name="colorPrimaryDark">#BA5624</color>
-    <color name="colorIntermediate">#BA5624</color>
+    <color name="colorPrimary">#BBDEFB</color>
+    <color name="colorPrimaryDark">#64B5F6</color>
+    <color name="colorIntermediate">#64B5F6</color>
     <color name="colorSecondary">#28965A</color>
     <color name="colorSecondaryDark">#2A6041</color>
+    <color name="colorPrimaryTransp">#00FFA552</color>
+    <color name="colorText">#0D47A1</color>
 </resources>

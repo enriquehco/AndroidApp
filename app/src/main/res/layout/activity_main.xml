@@ -8,10 +8,11 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:contentDescription="@string/default_description"
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="209dp"
+        android:layout_marginTop="50dp"
+        android:contentDescription="@string/default_description"
         android:src="@drawable/ugr2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
