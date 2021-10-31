@@ -9,6 +9,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ public class DisplayRuta extends AppCompatActivity {
     private int routeselected;
     private int numImagen;
     private String imagenActual;
+    private int numeroDeImagenes;
 
     SensorManager sensorManager;
     Sensor proximitySensor;
@@ -33,6 +36,8 @@ public class DisplayRuta extends AppCompatActivity {
     private int HEIGHT_PX = 1650;
     private float X_ANTERIOR=100, Y_ANTERIOR=100;
     private boolean inicializa = true;
+    private float x1,x2;
+    static final int MIN_DISTANCE = 150;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,11 @@ public class DisplayRuta extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_route);
         routeselected = Integer.parseInt(getIntent().getStringExtra("RouteSelected"));
+        switch (routeselected){
+            case 0: numeroDeImagenes=2;break;
+            case 1: numeroDeImagenes=3;break;
+            case 2: numeroDeImagenes=4;break;
+        }
         numImagen = 0;
         newImage();
         showImage();
@@ -66,11 +76,24 @@ public class DisplayRuta extends AppCompatActivity {
 
         if (rotationSensor == null) {
             Toast.makeText(this, "No rotation sensor found in device.", Toast.LENGTH_SHORT).show();
-            finish();
+            //finish();
         } else {
             // registering our sensor with sensor manager.
             sensorManager.registerListener(rotationSensorEventListener, rotationSensor,  500 * 1000);
 
+        }
+    }
+    public void SiguienteImagen(){
+        if(numImagen<numeroDeImagenes-1) {
+            numImagen++;
+            newImage();
+        }
+    }
+
+    public void ImagenAnterior(){
+        if(numImagen>0) {
+            numImagen--;
+            newImage();
         }
     }
 
@@ -89,6 +112,32 @@ public class DisplayRuta extends AppCompatActivity {
         Bitmap newBitmap = Bitmap.createBitmap(SOURCE_BITMAP, START_X, START_Y, WIDTH_PX, HEIGHT_PX, null, false);
         ImageView image = (ImageView)findViewById(R.id.imageViewRoute);
         image.setImageBitmap(newBitmap);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        switch(event.getAction())
+        {
+            case MotionEvent.ACTION_DOWN:
+                x1 = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = event.getX();
+                float deltaX = x2 - x1;
+                if (deltaX > MIN_DISTANCE)
+                {
+                    ImagenAnterior();
+                    showImage();
+                }
+                else if(deltaX < -MIN_DISTANCE)
+                {
+                    SiguienteImagen();
+                    showImage();
+                }
+                break;
+        }
+        return super.onTouchEvent(event);
     }
 
     public boolean calculateMotion(float rotX, float rotY, int distance){
@@ -129,10 +178,7 @@ public class DisplayRuta extends AppCompatActivity {
             // check if the sensor type is proximity sensor.
             if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
                 if (event.values[0] == 0) {
-                    numImagen++;
-                    //calculateMotion(140,140,1);
-                    //START_X = START_X + 100;
-                    newImage();
+                    SiguienteImagen();
                     showImage();
                 }
             }
@@ -185,14 +231,12 @@ public class DisplayRuta extends AppCompatActivity {
                 X_ANTERIOR = rotX;
                 inicializa=false;
             }
-            ((TextView)findViewById(R.id.textView2)).setText(""+rotX+","+rotY);
+            //((TextView)findViewById(R.id.textView2)).setText(""+rotX+","+rotY);
             boolean modif = calculateMotion(rotX,rotY, 50);
             if(modif)
                 showImage();
         }
 
     };
-
-
 }
 
