@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -11,6 +14,7 @@ import android.util.SparseArray;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.URLUtil;
@@ -21,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -31,6 +36,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.IOException;
 
 public class DisplayQRActivity extends AppCompatActivity {
+
+
     private static final String TAG = "DisplayQRActivity";
 
     private CameraSource cameraSource;
@@ -50,6 +57,8 @@ public class DisplayQRActivity extends AppCompatActivity {
         cameraView = (SurfaceView) findViewById(R.id.camera_view);
         initQR();
     }
+
+
 
     public void initQR(){
         //Crea el detector qr
@@ -141,5 +150,29 @@ public class DisplayQRActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    public class DisplayHelp extends DialogFragment implements View.OnClickListener {
+
+        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState){
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+            builder.setMessage(R.string.camera_help).setPositiveButton(R.string.default_entendido, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //
+                }
+            });
+            return builder.create();
+        }
+
+        @Override
+        public void onClick(View v) {
+            
+        }
+    }
+
+    public void toggleHelp() {
+        DisplayHelp nuevo = new DisplayHelp();
+        nuevo.show(getSupportFragmentManager(),"help");
     }
 }

@@ -12,4 +12,8 @@
 
     /*Defaults*/
     <string name="default_description">Image description here</string>
+    <string name="default_entendido">Entendido</string>
+
+    /*Mensajes de ayuda*/
+    <string name="camera_help">Apunta la cámara a un código QR en la facultad para obtener información sobre una ruta</string>
 </resources>
