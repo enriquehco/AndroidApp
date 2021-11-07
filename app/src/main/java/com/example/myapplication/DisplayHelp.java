@@ -18,8 +18,9 @@ public class DisplayHelp extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         //Create the view
-        View v = LayoutInflater.from(getActivity())
-                .inflate(R.layout.display_help, null);
+        //View v = LayoutInflater.from(getActivity())
+                //.inflate(R.layout.display_help, null);
+        //Push button to front of view
         //Create button listener
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             @Override
@@ -27,11 +28,12 @@ public class DisplayHelp extends AppCompatDialogFragment {
                 Log.i("TAG", "you clicked dialog buttonr");
             }
         };
+
         //Build the alert dialog
         return new AlertDialog.Builder(getActivity())
                 .setMessage(R.string.camera_help)
                 .setTitle("Info de camara")
-                .setView(v)
+                //.setView(v)
                 .setPositiveButton(R.string.default_entendido, listener)
                 .create();
     }

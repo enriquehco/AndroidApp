@@ -5,11 +5,22 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorIntermediate</item>
         <item name="colorAccent">@color/colorIntermediate</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
     </style>
     <style name="ActivityTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorPrimary">@color/colorSecondary</item>
         <item name="colorPrimaryDark">@color/colorIntermediate</item>
         <item name="colorAccent">@color/colorIntermediate</item>
+    </style>
+    
+    <!-- estilo para el alert dialog -->
+    <style name="AlertDialogTheme">
+        <item name="android:windowBackground">@drawable/rounded_corners</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:buttonTint">@color/colorPrimaryDark</item>
+        <item name="android:buttonBarPositiveButtonStyle">@string/default_entendido</item>
     </style>
 
 </resources>
