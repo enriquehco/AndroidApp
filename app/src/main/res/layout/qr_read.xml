@@ -29,20 +29,16 @@
             android:layout_width="match_parent"
             >
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <Button
                 android:id="@+id/fbutton"
                 android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="20dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="655dp"
-                android:src="@drawable/help"
-                android:onClick="toggleHelp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@drawable/help"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

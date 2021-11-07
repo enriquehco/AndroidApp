@@ -9,15 +9,20 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.URLUtil;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -26,6 +31,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -56,8 +63,21 @@ public class DisplayQRActivity extends AppCompatActivity {
 
         cameraView = (SurfaceView) findViewById(R.id.camera_view);
         initQR();
+        setupHelp();
     }
 
+    private void setupHelp() {
+        Button btn = (Button) findViewById(R.id.fbutton);
+        btn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getSupportFragmentManager();
+                DisplayHelp dialog = new DisplayHelp();
+                dialog.show(manager, "MSG");
+            }
+        });
+    }
 
 
     public void initQR(){
@@ -150,29 +170,5 @@ public class DisplayQRActivity extends AppCompatActivity {
             }
 
         });
-    }
-
-    public class DisplayHelp extends DialogFragment implements View.OnClickListener {
-
-        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState){
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-            builder.setMessage(R.string.camera_help).setPositiveButton(R.string.default_entendido, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //
-                }
-            });
-            return builder.create();
-        }
-
-        @Override
-        public void onClick(View v) {
-            
-        }
-    }
-
-    public void toggleHelp() {
-        DisplayHelp nuevo = new DisplayHelp();
-        nuevo.show(getSupportFragmentManager(),"help");
     }
 }
