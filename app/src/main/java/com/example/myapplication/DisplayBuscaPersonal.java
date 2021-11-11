@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -19,5 +21,9 @@ public class DisplayBuscaPersonal extends AppCompatActivity {
         setContentView(R.layout.activity_display_staff_search);
     }
 
+    public void startIA(View view){
+        Intent intent = new Intent(this, DisplayDepartIA.class);
+        startActivity(intent);
+    }
 
 }

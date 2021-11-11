@@ -9,6 +9,9 @@
     <string name="srch_route">Ruta</string>
     <string name="srch_info">Info QR</string>
     <string name="srch_staff">Busca Personal</string>
+    <string name="depart_ia">Departamento de Inteligencia Artificial</string>
+    <string name="depart_bd">Departamento de bases de datos</string>
+    <string name="depart_sw">Departamento de software</string>
 
     /*Defaults*/
     <string name="default_description">Image description here</string>
