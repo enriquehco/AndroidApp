@@ -19,21 +19,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.concurrent.TimeUnit;
 
+
+/*
+* Esta clase se encarga de manejar los listener de los distintos sensores asi como de utilizar
+* la clase gestor de rutas para ir gestionando como se van a mostrar las imagenes en función
+* de los inputs recibidos por los sensores
+* */
 public class DisplayRuta extends AppCompatActivity {
-
-    private int routeselected;
-    private int numImagen;
-    private String imagenActual;
-    private int numeroDeImagenes;
-
+    //Objeto que controla las imagenes de las distintas rutas
+    GestorRutas gestorRutas;
+    //Gestor de sensores
     SensorManager sensorManager;
+    //Sensor de proximidad
     Sensor proximitySensor;
+    //Sensor de rotacion
     Sensor rotationSensor;
-    private Bitmap SOURCE_BITMAP;
-    private int START_X = 2000;
+
+    private int START_X = 0;
     private int START_Y = 0;
     private int WIDTH_PX = 1000;
-    private int HEIGHT_PX = 1650;
+    private int HEIGHT_PX = 1850;
     private float X_ANTERIOR=100, Y_ANTERIOR=100;
     private boolean inicializa = true;
     private float x1,x2;
@@ -41,156 +46,163 @@ public class DisplayRuta extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        routeselected = 0;
-        numImagen = 0;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_route);
-        routeselected = Integer.parseInt(getIntent().getStringExtra("RouteSelected"));
-        switch (routeselected){
-            case 0: numeroDeImagenes=2;break;
-            case 1: numeroDeImagenes=3;break;
-            case 2: numeroDeImagenes=4;break;
-        }
-        numImagen = 0;
-        newImage();
-        showImage();
+        int routeSelected = Integer.parseInt(getIntent().getStringExtra("RouteSelected"));
+        //Inicializamos el gestor de imagenes indicandole la ruta seleccionada
+        gestorRutas = new GestorRutas(routeSelected);
+        //Le decimos que busque la imagen correspondiente
+        gestorRutas.newImage(getApplicationContext(),getResources());
+        //Y la muestre en el imageViewRoute
+        gestorRutas.showImage((ImageView)findViewById(R.id.imageViewRoute),START_X,START_Y,WIDTH_PX,HEIGHT_PX);
 
 
-        // calling sensor service.
+        // Creamos el servicio de gestor de sensores
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        // from sensor service we are
-        // calling proximity sensor
+        //Inicializamos y vinculamos los sensores
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 
-        // handling the case if the proximity
-        // sensor is not present in users device.
+        //Comprobamos que funcione el sensor de proximidad o que el dispositivo lo tenga
         if (proximitySensor == null) {
+            //Si no funciona mostramos un mensaje y no hacemos nada
             Toast.makeText(this, "No proximity sensor found in device.", Toast.LENGTH_SHORT).show();
             finish();
         } else {
-            // registering our sensor with sensor manager.
+            // En caso de que exista lo activamos y iniciamos el Listener
             sensorManager.registerListener(proximitySensorEventListener,proximitySensor,SensorManager.SENSOR_DELAY_NORMAL);
         }
-
+        //Comprobamos que funcione el sensor de rotacion o que el dispositivo lo tenga
         if (rotationSensor == null) {
+            //Si no funciona mostramos un mensaje y no hacemos nada
             Toast.makeText(this, "No rotation sensor found in device.", Toast.LENGTH_SHORT).show();
-            //finish();
+            finish();
         } else {
-            // registering our sensor with sensor manager.
+            // En caso de que exista lo activamos y iniciamos el Listener
             sensorManager.registerListener(rotationSensorEventListener, rotationSensor,  500 * 1000);
-
-        }
-    }
-    public void SiguienteImagen(){
-        if(numImagen<numeroDeImagenes-1) {
-            numImagen++;
-            newImage();
         }
     }
 
-    public void ImagenAnterior(){
-        if(numImagen>0) {
-            numImagen--;
-            newImage();
-        }
-    }
-
-    public void newImage(){
-        imagenActual = "drawable/ruta"+routeselected+"_"+numImagen;
-        Context context = getApplicationContext();
-        int id = context.getResources().getIdentifier(imagenActual, null, context.getPackageName());
-        SOURCE_BITMAP = BitmapFactory.decodeResource(getResources(), id);
-    }
-
-    public void showImage(){
-        if(START_X<0){START_X=0;}
-        if(START_X+WIDTH_PX>4000){START_X=4000-WIDTH_PX;}
-
-
-        Bitmap newBitmap = Bitmap.createBitmap(SOURCE_BITMAP, START_X, START_Y, WIDTH_PX, HEIGHT_PX, null, false);
-        ImageView image = (ImageView)findViewById(R.id.imageViewRoute);
-        image.setImageBitmap(newBitmap);
-    }
-
+    /*
+    * Este metodo se encargara de detectar si se hace un swipe hacia la
+    * derecha o hacia la izquierda para ir a la imagen anterior o a la
+    * siguiente respectivamente
+    * */
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
         switch(event.getAction())
         {
+            //Cuando ponemos el dedo en la pantalla guardamos la posicion
             case MotionEvent.ACTION_DOWN:
                 x1 = event.getX();
                 break;
+            //Cuando levantamos el dedo de la pantalla tomamos la posicion y realizamos lo
+            //correspondiente
             case MotionEvent.ACTION_UP:
                 x2 = event.getX();
+                //Calculamos la distancia del swipe
                 float deltaX = x2 - x1;
+                //Si la distancia es mayor que MIN_DISTANCE y positiva
+                //significa que hemos hecho swipe a la derecha
                 if (deltaX > MIN_DISTANCE)
                 {
-                    ImagenAnterior();
-                    showImage();
+                    //Pasamos a la foto anterior y mostramos la nueva imagen
+                    boolean cambio = gestorRutas.ImagenAnterior(getApplicationContext(),getResources());
+                    if(cambio)
+                        gestorRutas.showImage((ImageView)findViewById(R.id.imageViewRoute),START_X,START_Y,WIDTH_PX,HEIGHT_PX);
                 }
+                //Si la distancia es mayor que MIN_DISTANCE y negativa
+                //significa que hemos hecho swipe a la izquierda
                 else if(deltaX < -MIN_DISTANCE)
                 {
-                    SiguienteImagen();
-                    showImage();
+                    //Pasamos a la siguiente foto y mostramos la nueva imagen
+                    boolean cambio = gestorRutas.SiguienteImagen(getApplicationContext(),getResources());
+                    if(cambio)
+                        gestorRutas.showImage((ImageView)findViewById(R.id.imageViewRoute),START_X,START_Y,WIDTH_PX,HEIGHT_PX);
                 }
                 break;
         }
         return super.onTouchEvent(event);
     }
-
+    /*
+    * Este metodo se basa en calcular como va a afectar un movimiento rotacional del movil
+    * a la foto, es decir si la foto se va a desplazar a la izquierda o a la derecha
+    * */
     public boolean calculateMotion(float rotX, float rotY, int distance){
         int desp;
         boolean modif = false;
-        //Nos estamos moviendo a la derecha
+        //Calculamos la diferencia entre la posicion anterior y la actual
         float diff = Math.abs(X_ANTERIOR-rotX);
+        //Si la diferencia es menor que 0.2 la consideramos despreciable, de esta manera
+        //reducimos la sensiblidad asi como la carga de trabajo del movil
         if(diff>0.2) {
             modif = true;
+
             if (X_ANTERIOR < rotX) {
-                //Nos estamos moviendo a la derecha
+                //Si hemos pasado de [0-50] a [310-360] nos hemos movido a la izquierda
                 if (X_ANTERIOR > 0 && X_ANTERIOR < 50 && rotX < 360 && rotX > 310) {
                     desp = -distance;
-                } else {
+                }
+                //Nos hemos movido a la derecha
+                else {
                     desp = distance;
                 }
             } else {
+                //Si hemos pasado de [310-360] a [0-50] nos hemos movido a la derecha
                 if (rotX > 0 && rotX < 50 && X_ANTERIOR < 360 && X_ANTERIOR > 310) {
                     desp = distance;
-                } else {
+                }
+                //Nos hemos movido a la izquierda
+                else {
                     desp = -distance;
                 }
             }
+            //Actualizamos X_ANTERIOR
             X_ANTERIOR = rotX;
+            //Modificamos el punto de inicio de la foto, aplicando un factor
+            //multiplicativo para darle suavidad
             START_X -= desp*(diff*0.5);
         }
         return modif;
     }
-
+    /*
+    * Listener que se activara cada vez que el sensor de proximidad cambie su valor
+    * */
     SensorEventListener proximitySensorEventListener = new SensorEventListener() {
         @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
             // method to check accuracy changed in sensor.
         }
 
+        /*
+        * Metodo donde decidimos como actuar en caso de que el sensor de cercania sea
+        * modificado
+        * */
         @Override
         public void onSensorChanged(SensorEvent event) {
-            // check if the sensor type is proximity sensor.
+
             if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
+                //Si el evento es igual a 0 quiere decir que el sensor de cercania a notado
+                //que algo se a acercado a el
                 if (event.values[0] == 0) {
-                    SiguienteImagen();
-                    showImage();
+                    //En ese caso pasamos a la siguiente imagen y la mostramos
+                    boolean cambio = gestorRutas.SiguienteImagen(getApplicationContext(),getResources());
+                    if(cambio)
+                        gestorRutas.showImage((ImageView)findViewById(R.id.imageViewRoute),START_X,START_Y,WIDTH_PX,HEIGHT_PX);
                 }
             }
         }
     };
-
+    /*
+     * Listener que se activara cada vez que el sensor de rotacion muestree en funcion
+     * del parametro que le hemos pasado al crearlo
+     * */
     SensorEventListener rotationSensorEventListener = new SensorEventListener() {
         @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            // TODO Auto-generated method stub
         }
-
         @Override
         public void onSensorChanged(SensorEvent event) {
 
@@ -205,13 +217,17 @@ public class DisplayRuta extends AppCompatActivity {
             }
         }
 
+        /*
+         * Metodo donde decidimos como actuar en caso de que el sensor de rotacion sea
+         * modificado
+         * */
         private void update(float[] vectors){
-            try
-            {
+            //Si lo consideramos conveniente por que el dispositivo no
+            //puede soportar la carga de trabajo, dormimos la hebra cierto
+            //tiempo para que no se sature debido a la sensiblidad del sensor
+            try{
                 Thread.sleep(0);
-            }
-            catch(InterruptedException ex)
-            {
+            }catch(InterruptedException ex){
                 Thread.currentThread().interrupt();
             }
             int FROM_RADS_TO_DEGS = -57;
@@ -221,20 +237,26 @@ public class DisplayRuta extends AppCompatActivity {
             int worldAxisZ = SensorManager.AXIS_Z;
             float[] adjustedRotationMatrix = new float[9];
             SensorManager.remapCoordinateSystem(rotationMatrix, worldAxisX, worldAxisZ, adjustedRotationMatrix);
+            //Vector donde cargaremos la direccion del dispositivo
             float[] orientation = new float[3];
             SensorManager.getOrientation(adjustedRotationMatrix, orientation);
-            float rotX = orientation[0] * FROM_RADS_TO_DEGS;
+            //Direcciones de la x e y del dispositivo en grados
+            float posX = orientation[0] * FROM_RADS_TO_DEGS;
             float rotY = orientation[1] * FROM_RADS_TO_DEGS;
-            if(rotX<0){rotX = 180+(180+rotX); }
+            //Convertimos la [-180,180] grados a [0-360] grados
+            if(posX<0){posX = 180+(180+posX); }
             if(rotY<0){rotY = 180+(180+rotY); }
+            //Entramos una primera vez en ester if para tomar el valor de la direccion del
+            //dispositivo por primera vez
             if(inicializa) {
-                X_ANTERIOR = rotX;
+                X_ANTERIOR = posX;
                 inicializa=false;
             }
-            //((TextView)findViewById(R.id.textView2)).setText(""+rotX+","+rotY);
-            boolean modif = calculateMotion(rotX,rotY, 50);
+            //Comprobamos si hemos tenido que mover la imagen, y en caso
+            // positivo mostramos la imagen desplazada
+            boolean modif = calculateMotion(posX,rotY, 50);
             if(modif)
-                showImage();
+                gestorRutas.showImage((ImageView)findViewById(R.id.imageViewRoute),START_X,START_Y,WIDTH_PX,HEIGHT_PX);
         }
 
     };
