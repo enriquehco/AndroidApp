@@ -8,9 +8,9 @@
 
     <ImageView
         android:id="@+id/imageViewRoute"
-        android:layout_width="411dp"
-        android:layout_height="658dp"
-        android:layout_marginTop="78dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -18,3 +18,5 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--width was 411dp height 658dp-->
