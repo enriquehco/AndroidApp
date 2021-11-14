@@ -17,8 +17,6 @@ import android.view.WindowManager;
 public class DisplayRutasPosibles extends AppCompatActivity{
 
     private static final String TAG = "DisplayMapActivity";
-    private SensorManager sensorManager;
-    Sensor accelerometer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
