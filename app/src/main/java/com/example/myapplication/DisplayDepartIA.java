@@ -45,7 +45,9 @@ public class DisplayDepartIA extends AppCompatActivity  {
             mMyViewPager.setAdapter(pagerAdapter);
             fragments.add(fragment);
         }
+
        // new TabLayoutMediator(mTabLayout, mMyViewPager).attach();
+
         //MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragments);
         //mMyViewPager.setAdapter(pagerAdapter);
         //mTabLayout.setupWithViewPager(mMyViewPager, true);
