@@ -23,4 +23,13 @@
         <item name="android:buttonBarPositiveButtonStyle">@string/default_entendido</item>
     </style>
 
+    <!-- estilo para TabLayout -->
+    <style name="AppTabLayout">
+        <item name="tabBackground">@drawable/rounded_selector</item>
+        <item name="tabIndicator">@null</item>
+        <item name="android:background">@drawable/tab_selector_bg</item>
+        <item name="tabSelectedTextColor">@color/colorPrimary</item>
+        <item name="tabTextColor">@color/colorPrimaryDark</item>
+    </style>
+
 </resources>

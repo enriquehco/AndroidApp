@@ -20,4 +20,6 @@
 
     /*Mensajes de ayuda*/
     <string name="camera_help">Apunta la cámara a un código QR en la facultad para obtener información sobre una ruta</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
