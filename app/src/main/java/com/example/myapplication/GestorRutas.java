@@ -17,10 +17,13 @@ public class GestorRutas {
     private int routeselected;
     //Numero de imagen a mostrar dada una ruta
     private int numImagen;
-    //PATH de la imagen que tenemos que mostrar
-    private String imagenActual;
+    //Numero de imagenes que tiene la ruta
     private int numeroDeImagenes;
+    //Imagen cargada del sistema de archivos
     private Bitmap SOURCE_BITMAP;
+    private int WIDTH_PX = 1000;
+    private int HEIGHT_PX = 1700;
+    private double aspectRatio=1.9;
 
     /*
     * Constructor
@@ -28,7 +31,6 @@ public class GestorRutas {
     public GestorRutas(int ruta) {
         this.routeselected = ruta;
         this.numImagen = 0;
-        this.imagenActual = "";
         this.numeroDeImagenes = 5;
     }
 
@@ -62,11 +64,13 @@ public class GestorRutas {
      * de imagen de esa ruta y genera el bitmap de dicha imagen
      * */
     public void newImage(Context context, Resources resources){
-        imagenActual = "drawable/ruta"+routeselected+"_"+numImagen;
+        String imagenActual = "drawable/ruta"+routeselected+"_"+numImagen;
         //Context context = getApplicationContext();
         int id = context.getResources().getIdentifier(imagenActual, null, context.getPackageName());
         //SOURCE_BITMAP = BitmapFactory.decodeResource(getResources(), id);
         SOURCE_BITMAP = BitmapFactory.decodeResource(resources, id);
+        HEIGHT_PX = this.getImageHeight();
+        WIDTH_PX = (int) (HEIGHT_PX/aspectRatio);
     }
 
     /*
@@ -75,12 +79,25 @@ public class GestorRutas {
      * START_X y START_X+WIDTH_PX
      * START_Y y START_Y+WIDTH_PY
      * */
-    public void showImage(ImageView image,int START_X,int START_Y,int WIDTH_PX, int HEIGHT_PX){
+    public void showImage(ImageView image,int START_X,int START_Y){
+        int bitsAncho = SOURCE_BITMAP.getWidth();
         if(START_X<0){START_X=0;}
-        if(START_X+WIDTH_PX>4000){START_X=4000-WIDTH_PX;}
+        if(START_X+WIDTH_PX>bitsAncho){START_X=bitsAncho-WIDTH_PX;}
 
         Bitmap newBitmap = Bitmap.createBitmap(SOURCE_BITMAP, START_X, START_Y, WIDTH_PX, HEIGHT_PX, null, false);
         //ImageView image = (ImageView)findViewById(R.id.imageViewRoute);
         image.setImageBitmap(newBitmap);
+    }
+
+    public int getImageHeight(){
+        return SOURCE_BITMAP.getHeight();
+    }
+
+    public int getImageWidth(){
+        return SOURCE_BITMAP.getWidth();
+    }
+
+    public int getBestXStart(){
+        return (this.getImageWidth()/2)-(WIDTH_PX/2);
     }
 }

@@ -37,8 +37,7 @@ public class DisplayRuta extends AppCompatActivity {
 
     private int START_X = 0;
     private int START_Y = 0;
-    private int WIDTH_PX = 1000;
-    private int HEIGHT_PX = 1850;
+
     private float X_ANTERIOR=100, Y_ANTERIOR=100;
     private boolean inicializa = true;
     private float x1,x2;
@@ -54,7 +53,9 @@ public class DisplayRuta extends AppCompatActivity {
         //Le decimos que busque la imagen correspondiente
         gestorRutas.newImage(getApplicationContext(),getResources());
         //Y la muestre en el imageViewRoute
-        gestorRutas.showImage((ImageView)findViewById(R.id.imageViewRoute),START_X,START_Y,WIDTH_PX,HEIGHT_PX);
+
+        START_X = gestorRutas.getBestXStart();
+        gestorRutas.showImage((ImageView)findViewById(R.id.imageViewRoute),START_X,START_Y);
 
 
         // Creamos el servicio de gestor de sensores
@@ -110,8 +111,10 @@ public class DisplayRuta extends AppCompatActivity {
                 {
                     //Pasamos a la foto anterior y mostramos la nueva imagen
                     boolean cambio = gestorRutas.ImagenAnterior(getApplicationContext(),getResources());
-                    if(cambio)
-                        gestorRutas.showImage((ImageView)findViewById(R.id.imageViewRoute),START_X,START_Y,WIDTH_PX,HEIGHT_PX);
+                    if(cambio) {
+                        START_X = gestorRutas.getBestXStart();
+                        gestorRutas.showImage((ImageView) findViewById(R.id.imageViewRoute), START_X, START_Y);
+                    }
                 }
                 //Si la distancia es mayor que MIN_DISTANCE y negativa
                 //significa que hemos hecho swipe a la izquierda
@@ -119,8 +122,10 @@ public class DisplayRuta extends AppCompatActivity {
                 {
                     //Pasamos a la siguiente foto y mostramos la nueva imagen
                     boolean cambio = gestorRutas.SiguienteImagen(getApplicationContext(),getResources());
-                    if(cambio)
-                        gestorRutas.showImage((ImageView)findViewById(R.id.imageViewRoute),START_X,START_Y,WIDTH_PX,HEIGHT_PX);
+                    if(cambio) {
+                        START_X = gestorRutas.getBestXStart();
+                        gestorRutas.showImage((ImageView) findViewById(R.id.imageViewRoute), START_X, START_Y);
+                    }
                 }
                 break;
         }
@@ -130,19 +135,19 @@ public class DisplayRuta extends AppCompatActivity {
     * Este metodo se basa en calcular como va a afectar un movimiento rotacional del movil
     * a la foto, es decir si la foto se va a desplazar a la izquierda o a la derecha
     * */
-    public boolean calculateMotion(float rotX, float rotY, int distance){
+    public boolean calculateMotion(float posX, float rotY, int distance){
         int desp;
         boolean modif = false;
         //Calculamos la diferencia entre la posicion anterior y la actual
-        float diff = Math.abs(X_ANTERIOR-rotX);
+        float diff = Math.abs(X_ANTERIOR-posX);
         //Si la diferencia es menor que 0.2 la consideramos despreciable, de esta manera
         //reducimos la sensiblidad asi como la carga de trabajo del movil
         if(diff>0.2) {
             modif = true;
 
-            if (X_ANTERIOR < rotX) {
+            if (X_ANTERIOR < posX) {
                 //Si hemos pasado de [0-50] a [310-360] nos hemos movido a la izquierda
-                if (X_ANTERIOR > 0 && X_ANTERIOR < 50 && rotX < 360 && rotX > 310) {
+                if (X_ANTERIOR > 0 && X_ANTERIOR < 50 && posX < 360 && posX > 310) {
                     desp = -distance;
                 }
                 //Nos hemos movido a la derecha
@@ -151,7 +156,7 @@ public class DisplayRuta extends AppCompatActivity {
                 }
             } else {
                 //Si hemos pasado de [310-360] a [0-50] nos hemos movido a la derecha
-                if (rotX > 0 && rotX < 50 && X_ANTERIOR < 360 && X_ANTERIOR > 310) {
+                if (posX > 0 && posX < 50 && X_ANTERIOR < 360 && X_ANTERIOR > 310) {
                     desp = distance;
                 }
                 //Nos hemos movido a la izquierda
@@ -160,7 +165,7 @@ public class DisplayRuta extends AppCompatActivity {
                 }
             }
             //Actualizamos X_ANTERIOR
-            X_ANTERIOR = rotX;
+            X_ANTERIOR = posX;
             //Modificamos el punto de inicio de la foto, aplicando un factor
             //multiplicativo para darle suavidad
             START_X -= desp*(diff*0.5);
@@ -189,8 +194,10 @@ public class DisplayRuta extends AppCompatActivity {
                 if (event.values[0] == 0) {
                     //En ese caso pasamos a la siguiente imagen y la mostramos
                     boolean cambio = gestorRutas.SiguienteImagen(getApplicationContext(),getResources());
-                    if(cambio)
-                        gestorRutas.showImage((ImageView)findViewById(R.id.imageViewRoute),START_X,START_Y,WIDTH_PX,HEIGHT_PX);
+                    if(cambio) {
+                        START_X = gestorRutas.getBestXStart();
+                        gestorRutas.showImage((ImageView) findViewById(R.id.imageViewRoute), START_X, START_Y);
+                    }
                 }
             }
         }
@@ -256,7 +263,7 @@ public class DisplayRuta extends AppCompatActivity {
             // positivo mostramos la imagen desplazada
             boolean modif = calculateMotion(posX,rotY, 50);
             if(modif)
-                gestorRutas.showImage((ImageView)findViewById(R.id.imageViewRoute),START_X,START_Y,WIDTH_PX,HEIGHT_PX);
+                gestorRutas.showImage((ImageView)findViewById(R.id.imageViewRoute),START_X,START_Y);
         }
 
     };
