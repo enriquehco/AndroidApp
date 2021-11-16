@@ -12,82 +12,100 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="20dp"
-        android:paddingBottom="20dp">
+        android:paddingBottom="20dp"
+        android:paddingRight="20dp">
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/picabad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|top"
-                android:layout_marginStart="100dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="50dp"
-                android:src="@drawable/jabad"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <TextView
-                android:layout_below="@id/picabad"
-                android:id="@+id/abadnom"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/jabad_nom"
-                android:paddingTop="30dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/abadmail"
-                android:layout_below="@id/abadnom"
-                android:text="@string/jabad_mail"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/abadoffice"
-                android:layout_below="@id/abadmail"
-                android:text="@string/jabad_office"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/abadinf"
-                android:layout_below="@id/abadoffice"
-                android:text="@string/jabad_inf"/>
+                android:id="@+id/relay1"
+                android:background="@drawable/rounded_corners"
+                android:padding="10dp"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:id="@+id/picabad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:layout_marginStart="100dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:src="@drawable/jabad"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:layout_below="@id/picabad"
+                    android:id="@+id/abadnom"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/jabad_nom"
+                    android:paddingTop="30dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/abadmail"
+                    android:layout_below="@id/abadnom"
+                    android:text="@string/jabad_mail"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/abadoffice"
+                    android:layout_below="@id/abadmail"
+                    android:text="@string/jabad_office"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/abadinf"
+                    android:layout_below="@id/abadoffice"
+                    android:text="@string/jabad_inf"/>
 
-            <ImageView
-                android:id="@+id/picacid"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|top"
-                android:layout_marginStart="100dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="50dp"
-                android:src="@drawable/silviaac"
-                android:layout_below="@id/abadinf" />
-            <TextView
-                android:layout_below="@id/picacid"
-                android:id="@+id/acidnom"
+            </RelativeLayout>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/acid_nom"
-                android:paddingTop="30dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/acidmail"
-                android:layout_below="@id/acidnom"
-                android:text="@string/acid_mail"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/acidoffice"
-                android:layout_below="@id/acidmail"
-                android:text="@string/acid_office"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/acidinf"
-                android:layout_below="@id/acidoffice"
-                android:text="@string/acid_inf"/>
+                android:id="@+id/relay2"
+                android:background="@drawable/rounded_corners"
+                android:padding="10dp"
+                android:layout_below="@id/relay1"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:id="@+id/picacid"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|top"
+                    android:layout_marginStart="100dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:src="@drawable/silviaac"/>
+                <TextView
+                    android:layout_below="@id/picacid"
+                    android:id="@+id/acidnom"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/acid_nom"
+                    android:paddingTop="30dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/acidmail"
+                    android:layout_below="@id/acidnom"
+                    android:text="@string/acid_mail"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/acidoffice"
+                    android:layout_below="@id/acidmail"
+                    android:text="@string/acid_office"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/acidinf"
+                    android:layout_below="@id/acidoffice"
+                    android:text="@string/acid_inf"/>
+
+            </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
 
