@@ -43,8 +43,7 @@ public class DisplayBuscaPersonal extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_display_departamentos);
 
         tabLayout = findViewById(R.id.dep_tab);
@@ -60,12 +59,17 @@ public class DisplayBuscaPersonal extends AppCompatActivity {
             }
         }).attach();
 
+        tabLayout.getTabAt(0).setText("Departamento IA");
+        tabLayout.getTabAt(1).setText("Departamento Redes");
+        tabLayout.getTabAt(2).setText("Departamento Software");
+
         //inicializamos los datos de los sensores
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mAccel = 0.00f;
         mAccelCurrent = SensorManager.GRAVITY_EARTH;
         mAccelLast = SensorManager.GRAVITY_EARTH;
+        lastUpdate = -1;
         sensorManager.registerListener(movementSensorEventListener, accelerometer,SensorManager.SENSOR_DELAY_NORMAL);
     }
 
@@ -108,25 +112,28 @@ public class DisplayBuscaPersonal extends AppCompatActivity {
                 }*/
 
                 //Si el movimiento que se detecta en x es mas grande que 7, se asigna a un movimiento a la izquierda, por tanto a pasar a la página de la izquierda
-                if(Round(x,4)>7.0000){
-                    tabactiva = (tabactiva - 1) % 3;
-                    tabLayout.selectTab((tabLayout.getTabAt(tabactiva)));
+                if(Round(x,4)>5.0000){
+                    int tabantigua = tabactiva;
+                    tabactiva = ((tabactiva - 1) % 3 + 3)%3;
 
+                    tabLayout.selectTab((tabLayout.getTabAt(tabactiva)));
+                    Log.i("myactivity", "supuesto gesto izquierda = x:" + Round(x,4) + ", y:" + Round(y,4) + ", z:" + Round(z,4));
+                    Log.i("myactivity", "paso de tab: " + tabantigua + " a tab: " + tabactiva);
                     //duerme durante unos ms para que no detecte el movimiento de retorno
                     try{
-                        Thread.sleep(200);
+                        Thread.sleep(100);
                     }catch(InterruptedException ex){
                         Thread.currentThread().interrupt();
                     }
                 }
                 //Si el movimiento que se detecta en x es mas pequeño que -7, se asigna a un movimiento a la derecha, por tanto a pasar a la página de la derecha
-                else if(Round(x,4)<-7.0000){
+                else if(Round(x,4)<-5.0000){
                     tabactiva = (tabactiva + 1) % 3;
                     tabLayout.selectTab((tabLayout.getTabAt(tabactiva)));
-
+                    Log.i("myactivity", "supuesto gesto derecha = x:" + Round(x,4) + ", y:" + Round(y,4) + ", z:" + Round(z,4));
                     //duerme durante unos ms para que no detecte el movimiento de retorno
                     try{
-                        Thread.sleep(200);
+                        Thread.sleep(100);
                     }catch(InterruptedException ex){
                         Thread.currentThread().interrupt();
                     }
