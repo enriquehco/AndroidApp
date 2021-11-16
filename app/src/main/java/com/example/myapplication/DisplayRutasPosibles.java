@@ -18,14 +18,16 @@ public class DisplayRutasPosibles extends AppCompatActivity{
 
     private static final String TAG = "DisplayMapActivity";
 
+    //onCreate inicializa lo esencial de la actividad para que comience a funcionar
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_route_selector);
     }
 
+    //click que se invoca desde cualquiera de los 3 botones de ruta (aunque en esta version lite
+    //llevan a la misma ruta) donde dependiendo del boton decide que ruta se ha seleccionado.
     public void clickOnRoute(View view) {
         int routeSelected=0;
         switch (view.getId()){
@@ -39,10 +41,10 @@ public class DisplayRutasPosibles extends AppCompatActivity{
                 routeSelected=2;
                 break;
         }
-        //if(routeSelected!=0) {
+
+        //Inicia la actividad de ruta dependiendo del boton de ruta seleccionado
         Intent myIntent = new Intent(DisplayRutasPosibles.this, DisplayRuta.class);
         myIntent.putExtra("RouteSelected",Integer.toString(routeSelected));
         startActivity(myIntent);
-        //}
     }
 }

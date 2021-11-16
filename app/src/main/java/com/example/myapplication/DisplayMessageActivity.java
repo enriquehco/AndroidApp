@@ -9,7 +9,9 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 public class DisplayMessageActivity extends AppCompatActivity {
-
+    //obsoleto, ver si hay dependencias y si se puede borrar safely
+    // lo mismo va para la vista activity_display_message (es casi seguro que no es usada por ningun
+    //aspecto de la aplicación
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

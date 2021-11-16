@@ -13,8 +13,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-    /**Created when the user presses the send button*/
 
+    /**Diferentes acciones según el boton que se pulse en la pantalla principal, cada uno inicia las
+    actividades que son respectivamente:
+    -startMap: inicia la actividad de rutas
+    -startQR: inicia la actividad de lectura de código qr
+    -startStaffSearch: inicia la actividad de información de departamentos
+     **/
+    
     public void startMap(View view) {
         Intent intent = new Intent(this, DisplayRutasPosibles.class);
         startActivity(intent);

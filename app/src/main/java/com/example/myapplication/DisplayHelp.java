@@ -12,16 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+//Clase que extiende a DialogFragment para incluir los dialogos de ayuda que se implementan a lo
+//largo de la aplicación para guiar al usuario si lo necesita
 public class DisplayHelp extends AppCompatDialogFragment {
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        //Create the view
-        //View v = LayoutInflater.from(getActivity())
-                //.inflate(R.layout.display_help, null);
-        //Push button to front of view
-        //Create button listener
+        //Crea el listener del boton (funcion debug para ver como funcionaba el press del botón
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -29,11 +27,11 @@ public class DisplayHelp extends AppCompatDialogFragment {
             }
         };
 
-        //Build the alert dialog
+        //Construye el dialogo de alerta construido (se puede modificar el contenido en las llamadas
+        //propias que se hagan desde otras clases
         return new AlertDialog.Builder(getActivity())
                 .setMessage(R.string.camera_help)
                 .setTitle("Info de camara")
-                //.setView(v)
                 .setPositiveButton(R.string.default_entendido, listener)
                 .create();
     }

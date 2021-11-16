@@ -13,6 +13,10 @@ import android.view.ViewGroup;
  * Use the {@link Page1#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+//Esta clase se crea por defecto (junto con Page2 y Page3 y sus respectivas vistas de página cuando
+//se crean los fragmentos de modo automático, nada de lo hallado aquí es código generado por el
+//equipo.
 public class Page1 extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match

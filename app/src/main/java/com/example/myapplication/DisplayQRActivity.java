@@ -44,28 +44,34 @@ import java.io.IOException;
 
 public class DisplayQRActivity extends AppCompatActivity {
 
-
     private static final String TAG = "DisplayQRActivity";
 
+    //Parámetros y permisos para la camara
     private CameraSource cameraSource;
     private SurfaceView cameraView;
     private final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
     private String token = "";
     private String tokenanterior = "";
 
+    //onCreate se activa cuando se crea la actividad, inicializa lo indispensable para que funcione
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //parametro especial para indicar que sea una actividad a pantalla completa (para mas
+        //immersion en la cámara qr)
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.qr_read);
 
+        //Inicializa el surface donde se verá la camara, así como el proceso propio de la cámara,
+        //y el boton que mostrará la ayuda (top-right on screen)
         cameraView = (SurfaceView) findViewById(R.id.camera_view);
         initQR();
         setupHelp();
     }
 
+    //Metodo que inicializa el mensaje de ayuda
     private void setupHelp() {
         Button btn = (Button) findViewById(R.id.fbutton);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +89,7 @@ public class DisplayQRActivity extends AppCompatActivity {
     public void initQR(){
         //Crea el detector qr
         BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.ALL_FORMATS).build();
-        //Crea la camara
+        //Crea la camara y la inicializa
         cameraSource = new CameraSource.Builder(this,barcodeDetector).setRequestedPreviewSize(1600,1024).setAutoFocusEnabled(true).build();
 
         //listener de la camara
@@ -99,6 +105,7 @@ public class DisplayQRActivity extends AppCompatActivity {
                     }
                     return;
                 } else {
+                    //inicializa la cámara en la vista cameraView definida anteriormente
                     try {
                         cameraSource.start(cameraView.getHolder());
                     } catch (IOException ie) {
@@ -107,11 +114,14 @@ public class DisplayQRActivity extends AppCompatActivity {
                 }
             }
 
+            //método vacio pero necesario para la definición del holder
             @Override
             public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
 
             }
 
+            //método destroyer que detiene la actividad de cámara para que no siga usando recursos
+            //tras su detención
             @Override
             public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
                 cameraSource.stop();
@@ -124,10 +134,12 @@ public class DisplayQRActivity extends AppCompatActivity {
             public void release() {
             }
 
+            //método que procesa la información recibida por el lector
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections){
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
 
+                //si se ha detectado un barcode/qr/else.
                 if(barcodes.size() > 0) {
                     //obtener el token
                     token = barcodes.valueAt(0).displayValue.toString();
@@ -150,6 +162,8 @@ public class DisplayQRActivity extends AppCompatActivity {
                             startActivity(shareIntent);
                         }
 
+                        //espera de 5 segundos (para que sea efectiva la obtención y procesado del
+                        //token) y luego limpia dicho token por si se desean observar nuevos.
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
