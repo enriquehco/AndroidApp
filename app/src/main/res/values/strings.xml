@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Easy ETSIIT</string>
     <string name="edit_message">Enter a Message</string>
     <string name="button_send">Send</string>
     <string name="map_placeholder">This is where the map will be shown</string>
@@ -22,4 +22,15 @@
     <string name="camera_help">Apunta la cámara a un código QR en la facultad para obtener información sobre una ruta</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    /*texto de relleno*/
+    <string name="jabad_nom">Nombre: Francisco Javier Abad</string>
+    <string name="jabad_mail">Correo: jabad@ugr.es</string>
+    <string name="jabad_office">Despacho: 203</string>
+    <string name="jabad_inf">Imparte la asignatura de Metodología de la Programación</string>
+
+    <string name="acid_nom">Nombre: Silvia Acid Carrillo</string>
+    <string name="acid_mail">Correo: acid@decsai.ugr.es</string>
+    <string name="acid_office">Despacho: 304</string>
+    <string name="acid_inf">Imparte la asignatura de Metodología de la Programación</string>
 </resources>
