@@ -35,4 +35,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent( this, DisplayBuscaPersonal.class);
         startActivity(intent);
     }
+
+    public void startAgenteConv(View view){
+        Intent intent = new Intent( this, DisplayAgenteConversacional.class);
+        startActivity(intent);
+    }
 }
