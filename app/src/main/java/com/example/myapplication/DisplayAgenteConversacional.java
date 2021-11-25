@@ -93,7 +93,7 @@ public class DisplayAgenteConversacional extends AppCompatActivity {
 
             @Override
             public void onResults(Bundle bundle) {
-                micButton.setImageResource(R.drawable.ic_mic_black_off);
+                micButton.setImageResource(R.drawable.ic_mic_black_off3);
                 ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 editText.setText(data.get(0));
             }
@@ -125,18 +125,6 @@ public class DisplayAgenteConversacional extends AppCompatActivity {
                 }
             }
 
-            /*@Override
-            public boolean onClick(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    micButton.setImageResource(R.drawable.ic_mic_black_off3);
-                    speechRecognizer.stopListening();
-                }
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    micButton.setImageResource(R.drawable.ic_mic_black_off3_pressed);
-                    speechRecognizer.startListening(speechRecognizerIntent);
-                }
-                return false;
-            }*/
         });
 
         /*ttsButton.setOnClickListener(new View.OnClickListener() {
