@@ -36,7 +36,7 @@ public class DisplayAgenteConversacional extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_display_agente_conversacional);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             checkPermission();
         }
@@ -45,14 +45,14 @@ public class DisplayAgenteConversacional extends AppCompatActivity {
         micButton = findViewById(R.id.speechbutton);
         //ttsButton = findViewById(R.id.tts);
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-        textToSpeechEngine = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+        /*textToSpeechEngine = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 if (status != TextToSpeech.SUCCESS) {
                     Log.e("TTS", "Inicio de la síntesis fallido");
                 }
             }
-        });
+        });*/
 
 
         final Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -109,21 +109,37 @@ public class DisplayAgenteConversacional extends AppCompatActivity {
             }
         });
 
-        micButton.setOnTouchListener(new View.OnTouchListener() {
+        micButton.setOnClickListener(new View.OnClickListener() {
+            int count = 0;
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void onClick(View v) {
+                if(count==0){
+                    micButton.setImageResource(R.drawable.ic_mic_black_off3_pressed);
+                    speechRecognizer.startListening(speechRecognizerIntent);
+                    count=1;
+                }
+                else {
+                    micButton.setImageResource(R.drawable.ic_mic_black_off3);
+                    speechRecognizer.stopListening();
+                    count = 0;
+                }
+            }
+
+            /*@Override
+            public boolean onClick(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    micButton.setImageResource(R.drawable.ic_mic_black_off3);
                     speechRecognizer.stopListening();
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    micButton.setImageResource(R.drawable.ic_mic_black_off3);
+                    micButton.setImageResource(R.drawable.ic_mic_black_off3_pressed);
                     speechRecognizer.startListening(speechRecognizerIntent);
                 }
                 return false;
-            }
+            }*/
         });
 
-        ttsButton.setOnClickListener(new View.OnClickListener() {
+        /*ttsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String text = String.valueOf(editText.getText());
                 if (!text.isEmpty())
@@ -131,7 +147,10 @@ public class DisplayAgenteConversacional extends AppCompatActivity {
                         textToSpeechEngine.speak(text, TextToSpeech.QUEUE_FLUSH, null, "tts1");
                     }
             }
-        });
+        });*/
+
+        checkPermission();
+        Log.i("Agente", "check permission");
     }
 
     @Override
