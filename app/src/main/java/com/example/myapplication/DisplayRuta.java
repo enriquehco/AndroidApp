@@ -8,7 +8,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,6 +38,8 @@ public class DisplayRuta extends AppCompatActivity {
     //Sensor de rotacion
     Sensor rotationSensor;
 
+    private TextToSpeech textToSpeechEngine;
+
     private int START_X = 0;
     private int START_Y = 0;
 
@@ -47,6 +52,17 @@ public class DisplayRuta extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_route);
+
+        textToSpeechEngine = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status != TextToSpeech.SUCCESS) {
+                    Log.e("TTS", "Inicio de la síntesis fallido");
+                }
+            }
+        });
+
+
         int routeSelected = Integer.parseInt(getIntent().getStringExtra("RouteSelected"));
         //Inicializamos el gestor de imagenes indicandole la ruta seleccionada
         gestorRutas = new GestorRutas(routeSelected);
@@ -64,6 +80,10 @@ public class DisplayRuta extends AppCompatActivity {
         //Inicializamos y vinculamos los sensores
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        if (!gestorRutas.getInfo().isEmpty())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
+            }
 
         //Comprobamos que funcione el sensor de proximidad o que el dispositivo lo tenga
         if (proximitySensor == null) {
@@ -114,6 +134,10 @@ public class DisplayRuta extends AppCompatActivity {
                     if(cambio) {
                         START_X = gestorRutas.getBestXStart();
                         gestorRutas.showImage((ImageView) findViewById(R.id.imageViewRoute), START_X, START_Y);
+                        if (!gestorRutas.getInfo().isEmpty())
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
+                            }
                     }
                 }
                 //Si la distancia es mayor que MIN_DISTANCE y negativa
@@ -125,6 +149,10 @@ public class DisplayRuta extends AppCompatActivity {
                     if(cambio) {
                         START_X = gestorRutas.getBestXStart();
                         gestorRutas.showImage((ImageView) findViewById(R.id.imageViewRoute), START_X, START_Y);
+                        if (!gestorRutas.getInfo().isEmpty())
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
+                            }
                     }
                 }
                 break;
@@ -197,6 +225,10 @@ public class DisplayRuta extends AppCompatActivity {
                     if(cambio) {
                         START_X = gestorRutas.getBestXStart();
                         gestorRutas.showImage((ImageView) findViewById(R.id.imageViewRoute), START_X, START_Y);
+                        if (!gestorRutas.getInfo().isEmpty())
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
+                            }
                     }
                 }
             }

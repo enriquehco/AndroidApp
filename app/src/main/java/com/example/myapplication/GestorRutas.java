@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
+import java.util.ArrayList;
 
 /*
 * Clase que gestiona las rutas disponibles asi como las distintas
@@ -24,6 +25,8 @@ public class GestorRutas {
     private int WIDTH_PX = 1000;
     private int HEIGHT_PX = 1700;
     private double aspectRatio=1.9;
+    private ArrayList<String> info;
+
 
     /*
     * Constructor
@@ -32,6 +35,12 @@ public class GestorRutas {
         this.routeselected = ruta;
         this.numImagen = 0;
         this.numeroDeImagenes = 5;
+        info = new ArrayList<String>();
+        info.add("Suba por la rampa y pase por la puerta que tiene delante");
+        info.add("Gire a la derecha dejando las aulas a mano izquierda");
+        info.add("Avance hasta que se encuentre con las escaleras a mano izquierda");
+        info.add("Suba las escaleras y dirijase a la derecha");
+        info.add("Avance hasta que encuentre la clase 1.5, en ese momento habrá llegado a su destino");
     }
 
     /*
@@ -44,6 +53,10 @@ public class GestorRutas {
             return true;
         }
         return false;
+    }
+
+    public String getInfo(){
+        return info.get(numImagen);
     }
 
     /*
