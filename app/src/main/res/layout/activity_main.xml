@@ -72,7 +72,7 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_corners"
         android:text="Agente Conversacional"
-        android:onClick="startAgenteConv"
+        android:onClick="startAgenteConversacional"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Ruta3" />

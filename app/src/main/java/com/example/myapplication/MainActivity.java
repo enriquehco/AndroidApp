@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -93,6 +94,11 @@ public class MainActivity extends AppCompatActivity {
                     myIntent.putExtra("RouteSelected",Integer.toString(0));
                     startActivity(myIntent);
                 }
+                else{
+                    Toast.makeText(getApplicationContext(), "La ruta que desea visualizar no existe", Toast.LENGTH_SHORT).show();
+                    if(resultado.isEmpty())
+                        Toast.makeText(getApplicationContext(), "La ruta que desea visualizar no existe", Toast.LENGTH_SHORT).show();
+                }
 
             }
 
@@ -112,6 +118,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 if(count==0){
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                        textToSpeechEngine.speak("¿A dónde quieres ir?", TextToSpeech.QUEUE_FLUSH, null, "tts1");
+                    }
+                    try{
+                        Thread.sleep(500);
+                    }catch(InterruptedException ex){
+                        Thread.currentThread().interrupt();
+                    }
                     botonagente.setImageResource(R.drawable.ic_mic_black_off3_pressed);
                     speechRecognizer.startListening(speechRecognizerIntent);
                     count=1;
@@ -158,6 +177,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void startStaffSearch(View view){
         Intent intent = new Intent( this, DisplayBuscaPersonal.class);
+        startActivity(intent);
+    }
+
+    public void startAgenteConversacional(View view){
+        Intent intent = new Intent( this, DisplayAgenteConversacional.class);
         startActivity(intent);
     }
 
