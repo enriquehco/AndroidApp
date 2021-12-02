@@ -36,6 +36,7 @@ public class GestorRutas {
         this.numImagen = 0;
         this.numeroDeImagenes = 5;
         info = new ArrayList<String>();
+
         info.add("Suba por la rampa y pase por la puerta que tiene delante");
         info.add("Gire a la derecha dejando las aulas a mano izquierda");
         info.add("Avance hasta que se encuentre con las escaleras a mano izquierda");

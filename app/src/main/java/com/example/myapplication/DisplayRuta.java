@@ -66,8 +66,8 @@ public class DisplayRuta extends AppCompatActivity {
             }
         });
         Button btn = (Button) findViewById(R.id.volume);
-        volumenActivo=true;
-        btn.setBackgroundResource(R.drawable.voice_on);
+        volumenActivo=false;
+        btn.setBackgroundResource(R.drawable.voice_off);
         int routeSelected = Integer.parseInt(getIntent().getStringExtra("RouteSelected"));
         //Inicializamos el gestor de imagenes indicandole la ruta seleccionada
         gestorRutas = new GestorRutas(routeSelected);
@@ -85,12 +85,7 @@ public class DisplayRuta extends AppCompatActivity {
         //Inicializamos y vinculamos los sensores
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-        if(volumenActivo) {
-            if (!gestorRutas.getInfo().isEmpty())
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
-                }
-        }
+
 
         //Comprobamos que funcione el sensor de proximidad o que el dispositivo lo tenga
         if (proximitySensor == null) {
@@ -110,7 +105,9 @@ public class DisplayRuta extends AppCompatActivity {
             // En caso de que exista lo activamos y iniciamos el Listener
             sensorManager.registerListener(rotationSensorEventListener, rotationSensor,  500 * 1000);
         }
+
         setupVoice();
+        talk();
     }
 
     /*
@@ -118,6 +115,17 @@ public class DisplayRuta extends AppCompatActivity {
     * derecha o hacia la izquierda para ir a la imagen anterior o a la
     * siguiente respectivamente
     * */
+    public void talk(){
+        if(volumenActivo) {
+            if (!gestorRutas.getInfo().isEmpty()){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
+                }
+            }
+        }
+    }
+
+
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
@@ -142,12 +150,7 @@ public class DisplayRuta extends AppCompatActivity {
                     if(cambio) {
                         START_X = gestorRutas.getBestXStart();
                         gestorRutas.showImage((ImageView) findViewById(R.id.imageViewRoute), START_X, START_Y);
-                        if(volumenActivo) {
-                            if (!gestorRutas.getInfo().isEmpty())
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
-                                }
-                        }
+                        talk();
                     }
                 }
                 //Si la distancia es mayor que MIN_DISTANCE y negativa
@@ -159,12 +162,7 @@ public class DisplayRuta extends AppCompatActivity {
                     if(cambio) {
                         START_X = gestorRutas.getBestXStart();
                         gestorRutas.showImage((ImageView) findViewById(R.id.imageViewRoute), START_X, START_Y);
-                        if(volumenActivo) {
-                            if (!gestorRutas.getInfo().isEmpty())
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
-                                }
-                        }
+                        talk();
                     }
                 }
                 break;
@@ -237,12 +235,7 @@ public class DisplayRuta extends AppCompatActivity {
                     if(cambio) {
                         START_X = gestorRutas.getBestXStart();
                         gestorRutas.showImage((ImageView) findViewById(R.id.imageViewRoute), START_X, START_Y);
-                        if(volumenActivo) {
-                            if (!gestorRutas.getInfo().isEmpty())
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
-                                }
-                        }
+                        talk();
                     }
                 }
             }
@@ -326,21 +319,11 @@ public class DisplayRuta extends AppCompatActivity {
                     boton.setBackgroundResource(R.drawable.voice_off);
                 }else{
                     volumenActivo = true;
+                    talk();
                     boton.setBackgroundResource(R.drawable.voice_on);
                 }
             }
         });
-    }
-
-    public void setVolume() {
-
-        if(volumenActivo) {
-            volumenActivo = false;
-            btn.setBackgroundResource(R.drawable.voice_off);
-        }else {
-            volumenActivo = true;
-            btn.setBackgroundResource(R.drawable.voice_on);
-        }
     }
 }
 
