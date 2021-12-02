@@ -14,11 +14,13 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +41,8 @@ public class DisplayRuta extends AppCompatActivity {
     Sensor rotationSensor;
 
     private TextToSpeech textToSpeechEngine;
+    private boolean volumenActivo;
+    Button btn;
 
     private int START_X = 0;
     private int START_Y = 0;
@@ -61,8 +65,9 @@ public class DisplayRuta extends AppCompatActivity {
                 }
             }
         });
-
-
+        Button btn = (Button) findViewById(R.id.volume);
+        volumenActivo=true;
+        btn.setBackgroundResource(R.drawable.voice_on);
         int routeSelected = Integer.parseInt(getIntent().getStringExtra("RouteSelected"));
         //Inicializamos el gestor de imagenes indicandole la ruta seleccionada
         gestorRutas = new GestorRutas(routeSelected);
@@ -80,10 +85,12 @@ public class DisplayRuta extends AppCompatActivity {
         //Inicializamos y vinculamos los sensores
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-        if (!gestorRutas.getInfo().isEmpty())
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
-            }
+        if(volumenActivo) {
+            if (!gestorRutas.getInfo().isEmpty())
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
+                }
+        }
 
         //Comprobamos que funcione el sensor de proximidad o que el dispositivo lo tenga
         if (proximitySensor == null) {
@@ -103,6 +110,7 @@ public class DisplayRuta extends AppCompatActivity {
             // En caso de que exista lo activamos y iniciamos el Listener
             sensorManager.registerListener(rotationSensorEventListener, rotationSensor,  500 * 1000);
         }
+        setupVoice();
     }
 
     /*
@@ -134,10 +142,12 @@ public class DisplayRuta extends AppCompatActivity {
                     if(cambio) {
                         START_X = gestorRutas.getBestXStart();
                         gestorRutas.showImage((ImageView) findViewById(R.id.imageViewRoute), START_X, START_Y);
-                        if (!gestorRutas.getInfo().isEmpty())
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
-                            }
+                        if(volumenActivo) {
+                            if (!gestorRutas.getInfo().isEmpty())
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
+                                }
+                        }
                     }
                 }
                 //Si la distancia es mayor que MIN_DISTANCE y negativa
@@ -149,10 +159,12 @@ public class DisplayRuta extends AppCompatActivity {
                     if(cambio) {
                         START_X = gestorRutas.getBestXStart();
                         gestorRutas.showImage((ImageView) findViewById(R.id.imageViewRoute), START_X, START_Y);
-                        if (!gestorRutas.getInfo().isEmpty())
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
-                            }
+                        if(volumenActivo) {
+                            if (!gestorRutas.getInfo().isEmpty())
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
+                                }
+                        }
                     }
                 }
                 break;
@@ -225,10 +237,12 @@ public class DisplayRuta extends AppCompatActivity {
                     if(cambio) {
                         START_X = gestorRutas.getBestXStart();
                         gestorRutas.showImage((ImageView) findViewById(R.id.imageViewRoute), START_X, START_Y);
-                        if (!gestorRutas.getInfo().isEmpty())
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
-                            }
+                        if(volumenActivo) {
+                            if (!gestorRutas.getInfo().isEmpty())
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    textToSpeechEngine.speak(gestorRutas.getInfo(), TextToSpeech.QUEUE_FLUSH, null, "tts1");
+                                }
+                        }
                     }
                 }
             }
@@ -299,5 +313,34 @@ public class DisplayRuta extends AppCompatActivity {
         }
 
     };
+
+    private void setupVoice() {
+
+        final Button boton = (Button) findViewById(R.id.volume);
+        boton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(volumenActivo) {
+                    volumenActivo = false;
+                    boton.setBackgroundResource(R.drawable.voice_off);
+                }else{
+                    volumenActivo = true;
+                    boton.setBackgroundResource(R.drawable.voice_on);
+                }
+            }
+        });
+    }
+
+    public void setVolume() {
+
+        if(volumenActivo) {
+            volumenActivo = false;
+            btn.setBackgroundResource(R.drawable.voice_off);
+        }else {
+            volumenActivo = true;
+            btn.setBackgroundResource(R.drawable.voice_on);
+        }
+    }
 }
 
