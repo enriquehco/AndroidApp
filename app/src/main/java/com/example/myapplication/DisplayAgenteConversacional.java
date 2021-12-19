@@ -1,15 +1,21 @@
 package com.example.myapplication;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.http.*;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.ResultReceiver;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -17,6 +23,9 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.SslErrorHandler;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,14 +34,23 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import io.kommunicate.KmException;
+import io.kommunicate.Kommunicate;
+import io.kommunicate.callbacks.KmCallback;
+import io.kommunicate.callbacks.KmPrechatCallback;
+import io.kommunicate.users.KMUser;
+
+
 public class DisplayAgenteConversacional extends AppCompatActivity {
     public static final Integer RecordAudioRequestCode = 1;
     private SpeechRecognizer speechRecognizer;
     private TextToSpeech textToSpeechEngine;
     private EditText editText;
     private ImageView micButton;
+    private Button visitorButton;
     private Button ttsButton;
 
+    public static final String APP_ID = "npidialogflow-zkbhe";
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,15 +63,22 @@ public class DisplayAgenteConversacional extends AppCompatActivity {
         micButton = findViewById(R.id.speechbutton);
         //ttsButton = findViewById(R.id.tts);
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-        /*textToSpeechEngine = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status != TextToSpeech.SUCCESS) {
-                    Log.e("TTS", "Inicio de la síntesis fallido");
-                }
-            }
-        });*/
+        visitorButton = findViewById(R.id.botonkommunicate);
 
+        /*String html = "<iframe height='430' width='350' src='https://bot.dialogflow.com/7d72ba09-0b8e-46c9-8205-bdb2db811b97'></iframe>";
+
+        WebView webView;
+        webView = (WebView) findViewById(R.id.vistaweb);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient(){
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error){
+                handler.proceed();
+            }
+        });
+        webView.loadData(html, "text/html", null);
+        */
 
         final Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -127,6 +152,12 @@ public class DisplayAgenteConversacional extends AppCompatActivity {
 
         });
 
+        visitorButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                startDialogFlow(v);
+            }
+        });
+
         /*ttsButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String text = String.valueOf(editText.getText());
@@ -139,6 +170,8 @@ public class DisplayAgenteConversacional extends AppCompatActivity {
 
         checkPermission();
         Log.i("Agente", "check permission");
+
+        //Código de Kommunicate
     }
 
     @Override
@@ -160,5 +193,10 @@ public class DisplayAgenteConversacional extends AppCompatActivity {
             if(grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 Toast.makeText(this,"Permission Granted",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void startDialogFlow(View v){
+        Intent intent = new Intent(this, DisplayDialogFlow.class);
+        startActivity(intent);
     }
 }

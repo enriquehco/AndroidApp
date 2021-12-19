@@ -38,4 +38,22 @@ dependencies {
     def glideVersion = "4.8.0"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+
+    implementation 'io.kommunicate.sdk:kommunicateui:2.1.8'
+
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.google.firebase' && requested.name == 'firebase-messaging') {
+                details.useVersion '17.1.0'  //use a common firebase version here
+            }
+            if (requested.group == 'com.google.android.gms' && (requested.name == 'play-services-maps' || requested.name == 'play-services-location')) {
+                details.useVersion '15.0.1'  //use a common gms version here
+            }
+
+            if (requested.group == 'com.android.support' && requested.name != 'multidex') {
+                details.useVersion '27.1.1'  //use a common support libraries version here
+            }
+        }
+    }
 }
